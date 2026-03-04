@@ -13,19 +13,9 @@ def cdfNormalization(hist):
   cdf_m = np.ma.filled(cdf_m, 0).astype('uint8')
   return cdf_m
 
-def mappingWithCdfm( img, cdf_m):
-  r,c = img.shape
-  out = np.zeros_like(img, dtype='uint8')
-  
-  for i in range(r):
-    for j in range(c):
-      intens = img[i,j]
-      out[i,j] = cdf_m[intens]
-  return out
-
 def equalize(img, hist):  
   cdf_m = cdfNormalization(hist)
-  out = mappingWithCdfm(img, cdf_m)
+  out = cdf_m[img]
   
   return out
 
@@ -72,8 +62,9 @@ def main():
   
   out.append(edge_operator_meth(out[-1], 1))
   
-  utl.plotMultipleHist(histList, histTitleList)
-  utl.showMultipleImg(out, "Original vs Power Gamma vs Equalize Image vs Edge Image")
+  utl.plotMultipleHist(histList, histTitleList, "./outs/assignment3/mulHistograms.png")
+  
+  utl.showMultipleImg(out,"./outs/assignment3/mulImages.png" ,"Original vs Power Gamma vs Equalize Image vs Edge Image")
   utl.cv_show(out[-1], "Edge Image")
 
   return 

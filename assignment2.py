@@ -33,9 +33,8 @@ def main():
   
   out = equalize(img, hist)
   
-  muls = cv2.hconcat([img, out])
-  utl.cv_show(muls, "Original vs Equalized")
-  utl.plotMultipleHist([hist, utl.calHist(out)], ["Original Histogram", "Equalized Histogram"])
+  utl.showMultipleImg([img, out], "./outs/assignment2/mulImages.png", "Original vs Equalized")
+  utl.plotMultipleHist([hist, utl.calHist(out)], ["Original Histogram", "Equalized Histogram"], "./outs/assignment2/histograms.png")
   
   return
 
