@@ -2,7 +2,6 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 import util as utl
-import math
 
 # ===============Intermean Threshold ==================
 def toBinary(gray_img, thresh):
@@ -52,10 +51,7 @@ def intermean_adaptive(hist, times):
         threshs = intermean_method(hist, st, en)
         en = threshs+1
     return threshs
-# ==================== Median Filter ======================
 
-def MedianCustom(gray, sz):
-  blur_img = cv2.medianBlur(gray, sz)
   
 def split4(img):
     h, w = img.shape
@@ -81,33 +77,32 @@ def Merge4(x, out):
 
 
 def main():
-  opt = [0,1,1,0]
-  noise = [0,0,0,1]
-  iter=[1,1,2,1]
-  local_hists = []
-  out=[]
-  
-  img = cv2.imread("images/pic4.png", 0)
-  img_split = split4(img)
-  
-  for i in range (len(img_split)):
-    local = img_split[i]
-    if opt[i]:
-      local = 255 - img_split[i]
+    opt = [0,1,1,0]
+    noise = [0,0,0,1]
+    iter=[1,1,2,1]
+    local_hists = []
+    out=[]
     
-    if noise[i]:
-      local = cv2.medianBlur(local, 3)
-  
-    hist = utl.calHist(local)
-    local_hists.append(hist)
-    out.append(toBinary(local,intermean_adaptive(hist, iter[i])))
-  
-  img_merge = Merge4(out, np.zeros_like(img, dtype='uint8'))
-  
-  utl.plotMultipleHist(local_hists, ["local 1", "local 2", "local 3", "local 4"], "./outs/assignment4/local histograms.png")
-  utl.cv_show(img_merge)
-  cv2.imwrite("./outs/assignment4/result.png", img_merge)
-  return 
-
+    img = cv2.imread("images/pic4.png", 0)
+    img_split = split4(img)
+    
+    for i in range (len(img_split)):
+        local = img_split[i]
+        if opt[i]:
+            local = 255 - img_split[i]
+        
+        if noise[i]:
+            local = cv2.medianBlur(local, 3)
+    
+        hist = utl.calHist(local)
+        local_hists.append(hist)
+        out.append(toBinary(local,intermean_adaptive(hist, iter[i])))
+    
+    img_merge = Merge4(out, np.zeros_like(img, dtype='uint8'))
+    
+    utl.plotMultipleHist(local_hists, ["local 1", "local 2", "local 3", "local 4"], "./outs/assignment4/local histograms.png")
+    utl.cv_show(img_merge)
+    cv2.imwrite("./outs/assignment4/result.png", img_merge)
+    return 
 
 if __name__ == '__main__': main()
