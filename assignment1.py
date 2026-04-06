@@ -5,12 +5,9 @@ import util as utl
 
 def sequentialChannelEnhancement(img):
   out = np.zeros_like(img, dtype='uint8')
-  
   m,n,space = img.shape
-  
   for i in range (space):
     out[:,:,i] = utl.gammaTrans(img[:,:,i], 0.4)
-  
   return out
 
 def showHistogram(img, fName):
