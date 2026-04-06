@@ -3,7 +3,7 @@ import cv2
 import matplotlib.pyplot as plt
 import util as utl
 
-def rgb_to_cmyk(image):
+def bgr_to_cmyk(image):
     rgb_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB) #can also astype to float here
     rgb_normalized = rgb_image / 255.0
     
@@ -16,7 +16,7 @@ def rgb_to_cmyk(image):
     M = 1 - G
     Y = 1 - B
     
-    K = np.minimum(C,M,Y)
+    K = np.minimum(np.minimum(C, M), Y)
     
     denominator = 1 - K
     denominator[denominator == 0] = 1  
@@ -34,7 +34,7 @@ def main():
   
     out.append(cv2.imread("./images/cells.tif")  )
     
-    CMYK = rgb_to_cmyk(out[-1])
+    CMYK = bgr_to_cmyk(out[-1])
     out.append(CMYK[:,:,0])
     out.append(cv2.medianBlur(out[-1], 17))
     
