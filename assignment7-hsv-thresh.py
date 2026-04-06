@@ -38,7 +38,7 @@ def intermean_process(hist, t, st, en):
     tot = np.sum(hist[st:en])
     prob[st:en] = hist[st:en]/tot
     w0 = np.sum(prob[st:t+1]) + 0.0000001
-    w1 = (1 - w0) +  + 0.0000001
+    w1 = (1 - w0) + 0.0000001
     i0 = np.array([i for i in range(st,t+1)])
     i1 = np.array([i for i in range(t+1, en)])
     u0 = np.sum(i0*prob[st:t+1])/w0
@@ -93,8 +93,8 @@ def main():
         if noise[i]:
             local = cv2.medianBlur(local, 3)
             
-        x = local[:,:,option[i]-1]
-        if (option[i] == 1 or option[i] == 2):
+        x = local[:,:,option[i]]
+        if (option[i] == 0 or option[i] == 1):
             x = 255 - x
             
         out.append(toBinary(x, intermean_adaptive(utl.calHist(x), intermean_times[i])))
