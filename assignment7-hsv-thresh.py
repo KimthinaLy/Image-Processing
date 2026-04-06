@@ -78,7 +78,7 @@ def intermean_adaptive(hist, times):
     return threshs
 
 def main():
-    option = [1,2,2,3]
+    option = [0,1,1,2]
     noise = [1,0,1,0]
     intermean_times = [1,1,1,3]
     out=[]
@@ -89,18 +89,14 @@ def main():
 
     for i in range (len(img_split)):
         local = img_split[i]
+        
         if noise[i]:
             local = cv2.medianBlur(local, 3)
-    
-        if (option[i] == 1):
-            x = local[:,:,0]
+            
+        x = local[:,:,option[i]-1]
+        if (option[i] == 1 or option[i] == 2):
             x = 255 - x
-        elif (option[i] == 2):
-            x = local[:,:,1]
-            x = 255 - x
-        elif (option[i] == 3):
-            x = local[:,:,2]
-        
+            
         out.append(toBinary(x, intermean_adaptive(utl.calHist(x), intermean_times[i])))
         
     img_merge = Merge4(out, np.zeros_like(cv2.cvtColor(img,cv2.COLOR_BGR2GRAY), dtype='uint8'))
